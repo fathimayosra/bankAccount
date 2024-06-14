@@ -1,0 +1,48 @@
+import uuid
+
+class BankAccount:
+    def __init__(self,name,accountType, balance=0):
+        self.accountNumber =uuid.uuid4().int
+        self.name=name
+        self.accountType =accountType
+        self.balance =balance
+        self.filename = str(self.accountNumber) + "_" + self.accountType + "_" + self.name + ".txt"
+        with open(self.filename,"w") as file:
+            file.write("Transaction History:\n")
+    def deposit(self,amount):
+        self.balance += amount
+        with open(self.filename,"a") as file:
+             file.write(f"Deposit:{amount}\n")
+    def withdraw(self,amount):
+        if amount > self.balance:
+            print("Insufficient funds")
+        else:
+            self.balance -= amount
+            with open(self.filename,"a") as file:
+                file.write(f"Withdrawal:{amount}\n")
+     def getBalance(self):
+         return self.balance
+
+     def getID(self):
+          return self.accountNumber
+
+     def getUsername(self):
+          return self.name
+
+     def getAccountType(self):
+         return self.accountType
+
+     def getTransactionHistory(self):
+         with open(self.filename,"r") as file:
+             return file.read()
+def main():
+account1 =BankAccount("John","Chequing",1000)
+account1.deposit(500)
+account1.withdraw(200)
+print(account1.getTransactionHistory())
+print(account1.getBalance())
+print(account1.getID())
+print(account1.getUsername())
+print(account1.getAccountType())
+
+main()
